@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* @theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+} */
+@theme {
+  --color-light-bg-color: hsl(236, 33%, 92%);
+  --color-light-card-bg: hsl(0, 0%, 98%);
+  --color-light-text-color: hsl(0, 0%, 26%);
+  --color-light-inactive-color: hsl(236, 9%, 61%);
+  --color-light-active-color: hsl(220, 98%, 61%);
+  --color-light-hover-color: hsl(235, 19%, 35%);
+  --color-light-check-color: hsl(233, 11%, 84%);
+  --color-light-shadow-color: hsla(240, 5%, 85%, 0.603);
+  --color-light-plus-color: black;
+  --color-dark-bg-color: hsl(235, 21%, 11%);
+  --color-dark-card-bg: hsl(235, 24%, 19%);
+  --color-dark-text-color: hsl(0, 0%, 73%);
+  --color-dark-inactive-color: hsl(234, 11%, 52%);
+  --color-dark-active-color: hsl(234, 39%, 85%);
+  --color-dark-hover-color: hsl(236, 33%, 92%);
+  --color-dark-check-color: hsl(233, 14%, 35%);
+  --color-dark-shadow-color: hsla(0, 0%, 7%, 0.877);
+  --color-dark-plus-color: white;
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  max-width: 700px;  
+}
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
