@@ -1,6 +1,6 @@
-import CheckCircle from "./CheckCircleStyle";
 import { Header } from "./Header";
 import MainInput from "./MainInput";
+import TodoItems from "./TodoItems";
 
 export default function MainContainer() {
   return (
@@ -9,6 +9,7 @@ export default function MainContainer() {
         <Header />
         <section className="mt-3">
           <MainInput />
+          <TodoItems />
         </section>
       </div>
     </main>
