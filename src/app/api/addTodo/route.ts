@@ -4,6 +4,7 @@ export async function POST(_req: NextRequest) {
   const body = await _req.json();
   try {
     let collection = await StartConnection();
+    //@ts-expect-error
     let newTodo = await collection.insertOne(body);
     if (newTodo) {
       return Response.json(body);

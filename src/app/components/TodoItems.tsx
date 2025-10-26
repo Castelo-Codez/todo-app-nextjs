@@ -90,7 +90,7 @@ export default function TodoItems() {
               </div>
             )}
             {todos.length > 0 && (
-              <ListControlers moreStyl="mt-7 sm:hidden" filter={filter} />
+              <ListControlers moreStyl="mt-7 sm:hidden absolute w-full" filter={filter} />
             )}
           </>
         ) : (

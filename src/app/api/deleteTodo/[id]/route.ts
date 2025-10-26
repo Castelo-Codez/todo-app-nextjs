@@ -8,7 +8,7 @@ export async function DELETE(
   const { id } = await _ctx.params;
 
   try {
-    let collection = await StartConnection();
+    let collection = await StartConnection(); //@ts-expect-error
     let toggledTodo = await collection.deleteOne({
       id,
     });
