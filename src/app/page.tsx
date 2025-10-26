@@ -1,8 +1,7 @@
-
 import MainBackground from "./components/MainBackground";
 import MainContainer from "./components/MainContainer";
 
-export default function Home() {
+export default async function Home() {
   return (
     <section className=" relative">
       <MainBackground />

@@ -1,14 +1,19 @@
 "use client";
 import { nanoid } from "nanoid";
 import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
-import { addTodo, setNewTextTodo } from "../../../lib/store";
+import { setNewTextTodo } from "../../../lib/store";
+
 import CheckCircle from "./CheckCircleStyle";
+import { addTodo } from "../../../lib/features/todoSlice";
 
 export default function AddTodoButton() {
   const appDisp = useAppDispatch();
   const { todoText } = useAppSelector((state) => state.todos);
 
   function setNewTodo() {
+    if (todoText == "") {
+      return;
+    }
     appDisp(
       addTodo({
         id: nanoid(),

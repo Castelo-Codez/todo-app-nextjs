@@ -1,8 +1,7 @@
 import { Header } from "./Header";
 import MainInput from "./MainInput";
 import TodoItems from "./TodoItems";
-
-export default function MainContainer() {
+export default async function MainContainer() {
   return (
     <main className=" absolute top-[20%]  sm:top-[80px] tracking-[1rem] w-full left-0">
       <div className="container">

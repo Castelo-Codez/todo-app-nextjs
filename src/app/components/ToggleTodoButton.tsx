@@ -1,5 +1,6 @@
+import { Todo, toggleTodo } from "../../../lib/features/todoSlice";
 import { useAppDispatch } from "../../../lib/hooks";
-import { toggleTodo } from "../../../lib/store";
+
 import CheckCircle from "./CheckCircleStyle";
 
 export default function ToggleTodoButton({
@@ -11,7 +12,12 @@ export default function ToggleTodoButton({
 }) {
   const appDis = useAppDispatch();
   function toggle() {
-    appDis(toggleTodo({ id }));
+    appDis(
+      toggleTodo({
+        id,
+        completed,
+      })
+    );
   }
   return (
     <button onClick={toggle}>

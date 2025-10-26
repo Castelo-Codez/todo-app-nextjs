@@ -3,6 +3,10 @@ import { todoSlice } from "./features/todoSlice";
 
 export const Store = () => {
   return configureStore({
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
     reducer: {
       todos: todoSlice.reducer,
     },
@@ -16,9 +20,6 @@ export type AppDispatch = AppStore["dispatch"];
 
 export const {
   setNewTextTodo,
-  deleteTodo,
-  addTodo,
-  toggleTodo,
   changeFilter,
   clearCompleted,
 } = todoSlice.actions;

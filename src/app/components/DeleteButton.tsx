@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { useAppDispatch } from "../../../lib/hooks";
-import { deleteTodo } from "../../../lib/store";
+import { deletTodo } from "../../../lib/features/todoSlice";
 export default function DeleteButton({
   moreStyl,
   id,
@@ -11,7 +11,7 @@ export default function DeleteButton({
 }) {
   const appDisp = useAppDispatch();
   function removeTodo() {
-    appDisp(deleteTodo({ id }));
+    appDisp(deletTodo({ id }));
   }
   return (
     <button onClick={removeTodo} className={clsx(" cursor-pointer", moreStyl)}>
