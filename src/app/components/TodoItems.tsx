@@ -1,11 +1,10 @@
 "use client";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
-import { clearCompleted } from "../../../lib/store";
 import ListControlers from "./ListControlers";
 import TodoItem from "./TodoItem";
 import { useEffect } from "react";
-import { fetchTodos } from "../../../lib/features/todoSlice";
+import { clearCompleted, fetchTodos } from "../../../lib/features/todoSlice";
 import Skeleton from "./Skeleton";
 export default function TodoItems() {
   const store = useAppSelector((state) => state.todos);

@@ -24,7 +24,7 @@ export const addTodo = createAsyncThunk(
   "todos/addTodo",
   async ({ id, text, completed }: Todo) => {
     try {
-      let newTodo = await axios.post("/api/addTodo", {
+      let newTodo = await axios.post("/api/add-todo", {
         id,
         completed,
         text,
@@ -61,7 +61,7 @@ export const deletTodo = createAsyncThunk(
   "todos/deleteTodo",
   async ({ id }: { id: string | number }) => {
     try {
-      let toggleTodo = await axios.delete(`/api/deleteTodo/${id}`);
+      let toggleTodo = await axios.delete(`/api/delete-todo/${id}`);
       if (toggleTodo.status == 200) {
         return {
           id,
@@ -69,6 +69,15 @@ export const deletTodo = createAsyncThunk(
       }
     } catch (err) {
       return err;
+    }
+  }
+);
+export const clearCompleted = createAsyncThunk(
+  "todos/clearCompleted",
+  async () => {
+    let clearCompletedTodos = await axios.delete("/api/clear-completed");
+    if (clearCompletedTodos.status === 200) {
+      return true;
     }
   }
 );
@@ -82,9 +91,6 @@ export const todoSlice = createSlice({
     },
     setNewTextTodo(state, action: { payload: { newText: string } }) {
       state.todoText = action.payload.newText;
-    },
-    clearCompleted(state) {
-      state.todos = state.todos.filter((el) => !el.completed);
     },
   },
   extraReducers: (builder) => {
@@ -127,6 +133,9 @@ export const todoSlice = createSlice({
     builder.addCase(deletTodo.pending, (state, action) => {
       const { id } = action.meta.arg;
       state.todos = state.todos.filter((el: Todo) => el.id !== id);
+    });
+    builder.addCase(clearCompleted.pending, (state, action) => {
+      state.todos = state.todos.filter((el: Todo) => !el.completed);
     });
   },
 });
