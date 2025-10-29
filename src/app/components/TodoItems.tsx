@@ -8,11 +8,16 @@ import { clearCompleted, fetchTodos } from "../../../lib/features/todoSlice";
 import Skeleton from "./Skeleton";
 export default function TodoItems() {
   const store = useAppSelector((state) => state.todos);
-  const { todos, filter } = store;
+  const { todos, filter, hasErr } = store;
   const appDisp = useAppDispatch();
   useEffect(() => {
     appDisp(fetchTodos());
   }, []);
+  useEffect(() => {
+    if (hasErr) {
+      throw new Error("Something Went Wrong. Please Try Again Later");
+    }
+  }, [hasErr]);
   return (
     <>
       <div
@@ -89,7 +94,10 @@ export default function TodoItems() {
               </div>
             )}
             {todos.length > 0 && (
-              <ListControlers moreStyl="mt-7 sm:hidden absolute w-full" filter={filter} />
+              <ListControlers
+                moreStyl="mt-7 sm:hidden absolute w-full"
+                filter={filter}
+              />
             )}
           </>
         ) : (
@@ -99,4 +107,3 @@ export default function TodoItems() {
     </>
   );
 }
-

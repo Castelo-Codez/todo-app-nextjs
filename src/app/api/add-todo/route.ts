@@ -10,6 +10,8 @@ export async function POST(_req: NextRequest) {
       return Response.json(body);
     }
   } catch (err) {
-    throw new Error(`error`);
+    return Response.json({
+      errorCode: 500,
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isRejected } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export type Todo = { id: string | number; text: string; completed: boolean };
@@ -7,68 +7,68 @@ interface IntialState {
   filter: string;
   todoText: string;
   reqPen: boolean;
+  hasErr: boolean;
 }
 const initialState: IntialState = {
   todos: [],
   filter: "all",
   todoText: "",
   reqPen: true,
+  hasErr: false,
 };
 export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
-  let req = await fetch("/api/get-all-todos");
-  let todos = await req.json();
-  return todos;
+  let req = await axios.get("/api/get-all-todos");
+  if (!req.data.errorCode) {
+    let todos = await req.data;
+    return todos;
+  } else {
+    throw new Error();
+  }
 });
 
 export const addTodo = createAsyncThunk(
   "todos/addTodo",
   async ({ id, text, completed }: Todo) => {
-    try {
-      let newTodo = await axios.post("/api/add-todo", {
-        id,
-        completed,
-        text,
-      });
-      if (newTodo.status === 200) {
-        return {
-          ...newTodo.data,
-        };
-      }
-    } catch (err) {
-      return err;
+    let newTodo = await axios.post("/api/add-todo", {
+      id,
+      completed,
+      text,
+    });
+    if (!newTodo.data.errorCode) {
+      return {
+        ...newTodo.data,
+      };
+    } else {
+      throw new Error();
     }
   }
 );
 export const toggleTodo = createAsyncThunk(
   "todos/toggleTodo",
   async ({ id, completed }: { id: string | number; completed: boolean }) => {
-    try {
-      let toggleTodo = await axios.post(`/api/toggle-todo/${id}`, {
+    let toggleTodo = await axios.post(`/api/toggle-todo/${id}`, {
+      completed,
+    });
+    if (!toggleTodo.data.errorCode) {
+      return {
+        id,
         completed,
-      });
-      if (toggleTodo.status == 200) {
-        return {
-          id,
-          completed,
-        };
-      }
-    } catch (err) {
-      return err;
+      };
+    } else {
+      throw new Error();
     }
   }
 );
 export const deletTodo = createAsyncThunk(
   "todos/deleteTodo",
   async ({ id }: { id: string | number }) => {
-    try {
-      let toggleTodo = await axios.delete(`/api/delete-todo/${id}`);
-      if (toggleTodo.status == 200) {
-        return {
-          id,
-        };
-      }
-    } catch (err) {
-      return err;
+    let toggleTodo = await axios.delete(`/api/delete-todo/${id}`);
+    if (!toggleTodo.data.errorCode) {
+      return {
+        id,
+      };
+    } else {
+      throw new Error();
     }
   }
 );
@@ -76,8 +76,10 @@ export const clearCompleted = createAsyncThunk(
   "todos/clearCompleted",
   async () => {
     let clearCompletedTodos = await axios.delete("/api/clear-completed");
-    if (clearCompletedTodos.status === 200) {
+    if (!clearCompletedTodos.data.errorCode) {
       return true;
+    } else {
+      throw new Error();
     }
   }
 );
@@ -92,35 +94,22 @@ export const todoSlice = createSlice({
     setNewTextTodo(state, action: { payload: { newText: string } }) {
       state.todoText = action.payload.newText;
     },
+    clearError(state, action: { payload: { status: boolean } }) {
+      state.hasErr = action.payload.status;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(addTodo.pending, (state, action) => {
-      const newTodo = action.meta.arg;
-      state.todos = [...state.todos, newTodo];
-    });
-    builder.addCase(addTodo.rejected, (state, action) => {
-      const { id } = action.meta.arg;
-      state.todos = state.todos.filter((el: any) => {
-        el.id !== id;
-      });
-    });
-
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
       state.reqPen = false;
       const newTodos = action.payload;
       state.todos = [...newTodos];
     });
-    builder.addCase(toggleTodo.pending, (state, action) => {
-      const { id } = action.meta.arg;
-      state.todos = state.todos.map((el: any) => {
-        if (el.id == id) {
-          return { ...el, completed: !el.completed };
-        } else {
-          return el;
-        }
-      });
+
+    builder.addCase(addTodo.pending, (state, action) => {
+      const newTodo = action.meta.arg;
+      state.todos = [...state.todos, newTodo];
     });
-    builder.addCase(toggleTodo.rejected, (state, action) => {
+    builder.addCase(toggleTodo.pending, (state, action) => {
       const { id } = action.meta.arg;
       state.todos = state.todos.map((el: any) => {
         if (el.id == id) {
@@ -137,5 +126,11 @@ export const todoSlice = createSlice({
     builder.addCase(clearCompleted.pending, (state, action) => {
       state.todos = state.todos.filter((el: Todo) => !el.completed);
     });
+    builder.addMatcher(
+      (action) => isRejected(action) && action.type.startsWith("todos"),
+      (state, action) => {
+        state.hasErr = true;
+      }
+    );
   },
 });

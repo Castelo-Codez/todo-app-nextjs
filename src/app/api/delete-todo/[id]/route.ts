@@ -3,7 +3,7 @@ import StartConnection from "../../../../../lib/db/dbConnection";
 
 export async function DELETE(
   _req: NextRequest,
-  _ctx: RouteContext<"/api/deleteTodo/[id]">
+  _ctx: RouteContext<"/api/delete-todo/[id]">
 ) {
   const { id } = await _ctx.params;
 
@@ -18,6 +18,8 @@ export async function DELETE(
       });
     }
   } catch (err) {
-    throw new Error("error happend");
+    return Response.json({
+      errorCode: 500,
+    });
   }
 }

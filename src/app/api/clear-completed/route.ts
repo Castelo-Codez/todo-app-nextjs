@@ -1,12 +1,15 @@
 import StartConnection from "../../../../lib/db/dbConnection";
 
 export async function DELETE() {
-  let collection = await StartConnection();
-  //@ts-expect-error
-  let statusOfProcedure = await collection.deleteMany({ completed: true });
-  if (statusOfProcedure) {
+  try {
+    let collection = await StartConnection();
+    //@ts-expect-error
+    let statusOfProcedure = await collection.deleteMany({ completed: true });
+
     return Response.json(statusOfProcedure);
-  } else {
-    throw new Error("error Happend");
+  } catch (err) {
+    return Response.json({
+      errorCode: 500,
+    });
   }
 }

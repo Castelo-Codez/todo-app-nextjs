@@ -8,7 +8,7 @@ export async function POST(
   const { completed } = await _req.json();
   const { id } = await _ctx.params;
   try {
-    let collection = await StartConnection();    //@ts-expect-error
+    let collection = await StartConnection(); //@ts-expect-error
     let toggledTodo = await collection.updateOne(
       {
         id,
@@ -26,6 +26,8 @@ export async function POST(
       });
     }
   } catch (err) {
-    throw new Error("error happend");
+    return Response.json({
+      errorCode: 500,
+    });
   }
 }
