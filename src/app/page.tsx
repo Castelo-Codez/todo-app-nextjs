@@ -3,7 +3,7 @@ import MainContainer from "./components/MainContainer";
 
 export default async function Home() {
   return (
-    <section className=" relative">
+    <section className="  relative">
       <MainBackground />
       <MainContainer />
     </section>

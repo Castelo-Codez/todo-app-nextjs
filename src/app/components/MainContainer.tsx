@@ -3,7 +3,7 @@ import MainInput from "./MainInput";
 import TodoItems from "./TodoItems";
 export default async function MainContainer() {
   return (
-    <main className=" absolute top-[20%]  sm:top-[80px] tracking-[1rem] w-full left-0">
+    <main className="overflow-hidden absolute top-[20%]  sm:top-[80px] tracking-[1rem] w-full left-0">
       <div className="container">
         <Header />
         <section className="mt-3">

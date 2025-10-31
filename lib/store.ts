@@ -18,4 +18,10 @@ export type AppStore = ReturnType<typeof Store>;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
 
-export const { setNewTextTodo, changeFilter , clearError} = todoSlice.actions;
+export const {
+  setNewTextTodo,
+  changeFilter,
+  setNewHasError,
+  arrangeTodos,
+  clearError,
+} = todoSlice.actions;

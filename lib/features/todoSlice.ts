@@ -1,7 +1,12 @@
 import { createAsyncThunk, createSlice, isRejected } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export type Todo = { id: string | number; text: string; completed: boolean };
+export type Todo = {
+  id: string | number;
+  text: string;
+  completed: boolean;
+  order: number;
+};
 interface IntialState {
   todos: Todo[];
   filter: string;
@@ -28,11 +33,12 @@ export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
 
 export const addTodo = createAsyncThunk(
   "todos/addTodo",
-  async ({ id, text, completed }: Todo) => {
+  async ({ id, text, completed, order }: Todo) => {
     let newTodo = await axios.post("/api/add-todo", {
       id,
       completed,
       text,
+      order,
     });
     if (!newTodo.data.errorCode) {
       return {
@@ -97,12 +103,19 @@ export const todoSlice = createSlice({
     clearError(state, action: { payload: { status: boolean } }) {
       state.hasErr = action.payload.status;
     },
+    arrangeTodos(state, action: { payload: { newTodos: Todo[] } }) {
+      const { newTodos } = action.payload;
+      state.todos = newTodos;
+    },
+    setNewHasError(state, action: { payload: { newHasErrorState: boolean } }) {
+      state.hasErr = action.payload.newHasErrorState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
       state.reqPen = false;
       const newTodos = action.payload;
-      state.todos = [...newTodos];
+      state.todos = [...newTodos].sort((a, b) => a.order - b.order);
     });
 
     builder.addCase(addTodo.pending, (state, action) => {

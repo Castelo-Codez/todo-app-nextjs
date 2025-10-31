@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={` ${JosefinSans.className}   bg-light-bg-color  dark:bg-dark-bg-color  min-h-screen  antialiased`}
+        className={`  ${JosefinSans.className}   bg-light-bg-color  dark:bg-dark-bg-color  min-h-screen  antialiased`}
       >
         <ThemeProvider>
           <StoreProvider>{children}</StoreProvider>

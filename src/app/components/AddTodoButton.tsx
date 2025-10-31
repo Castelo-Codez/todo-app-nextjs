@@ -8,7 +8,7 @@ import { addTodo } from "../../../lib/features/todoSlice";
 
 export default function AddTodoButton() {
   const appDisp = useAppDispatch();
-  const { todoText } = useAppSelector((state) => state.todos);
+  const { todoText, todos } = useAppSelector((state) => state.todos);
 
   function setNewTodo() {
     if (todoText == "") {
@@ -19,6 +19,7 @@ export default function AddTodoButton() {
         id: nanoid(),
         text: todoText,
         completed: false,
+        order: todos.length + 1,
       })
     );
     setTimeout(() => {

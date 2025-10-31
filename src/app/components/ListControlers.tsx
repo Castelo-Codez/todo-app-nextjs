@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useAppDispatch } from "../../../lib/hooks";
 import { changeFilter } from "../../../lib/store";
 
+
 export default function ListControlers({
   filter,
   moreStyl,
@@ -14,6 +15,8 @@ export default function ListControlers({
   function newFilter(filter: string) {
     appDisp(changeFilter({ filter }));
   }
+
+
   return (
     <ul
       className={clsx(

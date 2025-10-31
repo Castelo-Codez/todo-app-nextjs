@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import StartConnection from "../../../../lib/db/dbConnection";
 export async function POST(_req: NextRequest) {
   const body = await _req.json();
+  console.log(body);
   try {
     let collection = await StartConnection();
     //@ts-expect-error
